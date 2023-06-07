@@ -1,13 +1,13 @@
 // Criar elemento que irá rodar o jogo
-let canvas = document.getElementById("snake")
-let context = canvas.getConext("2d");
+let canvas = document.getElementById("gamesnake")
+let context = canvas.getContext("2d");
 let box = 32;
 
 //Criar cobrinha como vetor, já que lea vai ser uma série de coordenadas, que quando pintadas, criam os quadrinhos
 let snake = [];
 
 //Inicio da cobrinha 
-snake[0] ={
+snake[0] = {
     x: 8 * box,
     y: 8 * box
 }
@@ -29,10 +29,16 @@ function criarBG (){
 }
 //Função para criar a cobrinha
 function criarCobrinha (){
-    for(i = 0; i < snake.lentgth; i++){
+    for(i = 0; i < snake.length; i++){
         context.fillStyle = "green";
         context.fillRect(snake[i].x, snake[i].y, box, box);
     }
+}
+
+//Função para criar comida 
+function drawFood (){
+    context.fillStyle = "red";
+    context.fillRect(food.x, food.y, box, box);
 }
 
 // Quando um evento acontece, detecta e chama a fnção update 
@@ -60,12 +66,19 @@ function iniciarJogo(){
        snake[0].y = 16 * box;
     }
 
+    for(i = 1; i < snake.length; i++){
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+            clearInterval(jogo);
+            alert('Game Over :(')
+        }
+    }
+
     criarBG();
     criarCobrinha();
     drawFood();
 
-    let snakeX = snake[0].X;
-    let snakeY = sanke[0].Y;
+    let snakeX = snake[0].x;
+    let snakeY = snake[0].y;
 
     if(direction == "right") snakeX += box;
     if(direction == "left") snakeX -= box;
@@ -86,4 +99,6 @@ function iniciarJogo(){
     //Método unshift adiciona como primeiro quadradinho da cobrinha
     snake.unshift(newHead);
 }
+
+let jogo = setInterval(iniciarJogo, 100);
 
